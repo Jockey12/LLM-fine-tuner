@@ -1,7 +1,7 @@
 # LLM-fine-tuner
 
 Fine-tune an LLM (instruction tuning / LoRA) and convert the resulting model to GGUF for use with lighter inference runtimes (llama.cpp, ggml-based runtimes, etc.).
-- I tried fine-tuning on my RTX 3050, but only could fine-tune a 4b model up to 64 context tokens.
+- I tried fine-tuning on my RTX 3050, but could only tune a 4b model up to --max_seq_length 64  which is not good even as a code completion AI. 64 tokens is only about 5-10 lines of code, memory of a fish. 
 - I suggest using a cloud provider with access to at least a NVIDA T4 for 16GB vram to tune a 4b model.
 - A couple of good providers are:
   - [Google Colab](https://colab.research.google.com)
