@@ -1,5 +1,4 @@
 """
-QLoRA fine-tuning for a Gemma-family causal LM (coding improvement).
 
 NOTE: This cannot train a GGUF repo such as:
   https://huggingface.co/mradermacher/Gemma3-Code-Reasoning-4B-i1-GGUF
@@ -24,11 +23,6 @@ Example (custom JSONL):
     --dataset_name json \
     --dataset_config_name ./train.jsonl \
     --output_dir ./gemma3-code-qlora-adapter
-
-JSONL accepted formats (one per line):
-- {"prompt":"...", "completion":"..."}
-- {"messages":[{"role":"user","content":"..."},{"role":"assistant","content":"..."}]}
-- {"text":"..."}  # already formatted
 """
 
 import argparse
