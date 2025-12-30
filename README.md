@@ -38,7 +38,7 @@ Features
 
 Requirements
 ------------
-- Python 3.8+
+- Python 3.11<=
 - Git
 - CUDA-enabled GPU (for training) or CPU-only for small experiments (LoRA still recommended)
 - Typical packages (see installation below)
