@@ -2,7 +2,10 @@
 
 Fine-tune an LLM (instruction tuning / LoRA) and convert the resulting model to GGUF for use with lighter inference runtimes (llama.cpp, ggml-based runtimes, etc.).
 
-> Repo description: fine tune an LLM
+> You can use cloud providers' machines to train and fine-tune the LLMs, A couple of good providers are:
+- [Google Colab](https://colab.research.google.com)
+- [lightning.ai](https://lightning.ai)
+- [FMHY](https://fmhy.pages.dev/developer-tools#cloud-ides-collab)
 
 Table of contents
 - [Overview](#overview)
@@ -53,7 +56,7 @@ Recommended Python packages
 - sentencepiece / tokenizers (depending on tokenizer)
 - (optionally) bitsandbytes for 8-bit training
 
-Quickstart (setup)
+Quickstart
 ------------------
 1. Clone the repo:
    ```
@@ -74,6 +77,8 @@ Quickstart (setup)
 3. Acquire a base model:
    - Use a Hugging Face-compatible model you are licensed to use (for example a local or HF model repo).
    - Note: some models (e.g., Llama-family) require accepting model licenses on Hugging Face before download.
+     
+4. Fine-tune and convert to GGUF, quantization etc..
 
 Data preparation
 ----------------
@@ -104,32 +109,13 @@ LoRA (recommended for low-resource fine-tuning)
   3. Create a dataset (tokenized) for training.
   4. Train with Trainer or Accelerate.
   5. Save the final adapter or merged model.
-- Minimal conceptual example (pseudocode):
-  ```python
-  from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
-  from peft import get_peft_model, LoraConfig, prepare_model_for_kbit_training
-
-  model_name = "your/base-model"
-  tokenizer = AutoTokenizer.from_pretrained(model_name)
-  model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
-
-  # Optional: prepare for 4/8-bit training (bitsandbytes)
-  model = prepare_model_for_kbit_training(model)
-
-  lora_config = LoraConfig(
-      r=8, lora_alpha=32, target_modules=["q_proj","v_proj"], lora_dropout=0.05, bias="none"
-  )
-  model = get_peft_model(model, lora_config)
-
-  # build tokenized dataset -> trainer -> train
-  training_args = TrainingArguments(output_dir="lora-output", ...)
-  trainer = Trainer(model=model, args=training_args, train_dataset=..., eval_dataset=...)
-  trainer.train()
-  trainer.save_model("lora-output")
-  ```
+- finetune-llm.py does it for you.
+- 
 - After training you can either:
   - Save only the adapter (PEFT adapters) and load them on top of the base model at inference time.
   - Merge the adapters into the base model and save a standalone model (useful if converting to GGUF).
+  - merge_model.py does it for you.
+    
 
 Full fine-tuning (if you have resources)
 - Full fine-tuning updates all model weights (large compute & memory).
@@ -234,7 +220,7 @@ License
 ```md
 MIT License
 
-Copyright (c) [year] [fullname]
+Copyright (c) [2025-present] [Jockey12]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
