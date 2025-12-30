@@ -2,31 +2,34 @@ import torch
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Paths
-base_model_id = "GetSoloTech/Gemma3-Code-Reasoning-4B"
-adapter_path = "./gemma3-code-qlora-adapter"
-output_dir = "./gemma3-merged-model"
+# PATHS
+base_model_id = "huihui-ai/Qwen2.5-Coder-3B-Instruct-abliterated"
+adapter_path = "./qwen-uncensored-l4/checkpoint-200" 
+output_dir = "./qwen-merged-final"
+"""
+# Update above as follows:
+#
+# base_model_id : can be the id after .com of (https://huggingface.co/jockey1011/qwen2.5-coder-3b-instruct-uncensored-dolphin-gguf)
+# so jockey1011/qwen2.5-coder-3b-instruct-uncensored-dolphin-gguf ( but you can't train gguf )
+# username/model-id
+# adapter_path = the path you have your model that you have stored and trained using finetune-llm.py
+# output_dir = folder you want to output the merged model.
+"""
 
-print(f"Loading base model: {base_model_id}")
-# Load in CPU memory (RAM) to avoid VRAM OOM
+print("Loading base model...")
 model = AutoModelForCausalLM.from_pretrained(
     base_model_id,
-    low_cpu_mem_usage=True,
-    return_dict=True,
     torch_dtype=torch.float16,
-    device_map="cpu",
+    device_map="auto"
 )
 
-print(f"Loading LoRA adapter: {adapter_path}")
+print("Loading adapter and merging...")
 model = PeftModel.from_pretrained(model, adapter_path)
-
-print("Merging weights...")
 model = model.merge_and_unload()
 
-print(f"Saving merged model to: {output_dir}")
+print(f"Saving merged model to {output_dir}...")
 model.save_pretrained(output_dir)
-
 tokenizer = AutoTokenizer.from_pretrained(base_model_id)
 tokenizer.save_pretrained(output_dir)
 
-print("Done! You can now convert 'gemma3-merged-model' to GGUF.")
+print("Done! Model merged successfully.")
