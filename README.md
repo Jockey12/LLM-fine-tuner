@@ -1,11 +1,12 @@
 # LLM-fine-tuner
 
 Fine-tune an LLM (instruction tuning / LoRA) and convert the resulting model to GGUF for use with lighter inference runtimes (llama.cpp, ggml-based runtimes, etc.).
-
-> You can use cloud providers' machines to train and fine-tune the LLMs, A couple of good providers are:
-- [Google Colab](https://colab.research.google.com)
-- [lightning.ai](https://lightning.ai)
-- [FMHY](https://fmhy.pages.dev/developer-tools#cloud-ides-collab)
+- I tried fine-tuning on my RTX 3050, but only could fine-tune a 4b model up to 64 context tokens.
+- I suggest using a cloud provider with access to at least a NVIDA T4 for 16GB vram to tune a 4b model.
+- A couple of good providers are:
+  - [Google Colab](https://colab.research.google.com)
+  - [lightning.ai](https://lightning.ai)
+  - [FMHY](https://fmhy.pages.dev/developer-tools#cloud-ides-collab)
 
 Table of contents
 - [Overview](#overview)
